@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{%block title%} 
+NFT Minter
+{%endblock%}
+{%block content%} 
+<div class="container">
+<h2>Mint Your NFT</h2>
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Upload the image you want to make into an NFT</label>
+        <input class="form-control" type="file" id="formFile">
+    </div>
+    <button type="button" class="btn btn-dark">Mint NFTs</button>
+</div>
+{%endblock%}

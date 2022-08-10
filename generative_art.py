@@ -20,6 +20,5 @@ def get_file(txt):
     return f"{GA_file}.png"
 
 def save_files(txt):
-    spl = txt.split()
-    GA_file = '_'.join(spl)
-    return shutil.move(f'/content/{GA_file}.png', f'/content/gdrive/MyDrive/GenerativeArt/Images/{GA_file}.png')
+    GA_file = get_file(txt)
+    return shutil.move(f'/content/{GA_file}', f'/content/gdrive/MyDrive/GenerativeArt/Images/{GA_file}.png')
