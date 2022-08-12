@@ -31,7 +31,45 @@ app = Flask(__name__)
 IMAGE_FOLDER = "static/Images"
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
-app.config['IMAGE_FOLDER'] = IMAGE_FOLDER
+image_dict = {'images' : {}}
+
+for filename in os.listdir(IMAGE_FOLDER):
+        f = os.path.join(IMAGE_FOLDER, filename)
+        filename = filename.replace('.png', '')
+        image_dict['images'][filename] = f
+
+options_list = []
+
+def create_options():
+    for file in image_dict['images']:
+        option = f"<option value={file}>{file}</option>"
+        options_list.append(option)
+
+    options = ''.join(options_list)
+    return options
+
+
+def get_images():
+    for filename in os.listdir(IMAGE_FOLDER):
+        f = os.path.join(IMAGE_FOLDER, filename)
+        filename = filename.replace('.png', '')
+        image_dict['images'][filename] = f
+    options = create_options()
+    dropdown =  f"""<div class="input-group">
+                         <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                           {options}
+                         </select>
+                         <button class="btn btn-outline-secondary" type="button">Button</button>
+                    </div>"""
+    block = open("templates/options.html", "w")
+    start_block = '{% extends "images.html" %}'
+    end_block = '{%endblock%}'
+    block.write(f'{start_block}\n{dropdown}\n{end_block}')
+    block.close()
+
+
+
+app.config['UPLOAD_FOLDER'] = IMAGE_FOLDER
 
 text_records = {}
 
@@ -74,12 +112,12 @@ def nft():
 # Images Page
 @app.route("/images/")
 def images():
-    return render_template("images.html")
+    get_images()
+    return render_template("options.html")
 
 @app.route('/images/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['IMAGE_FOLDER'],
-                               filename)
+    return 
 
 
 if __name__ == "__main__":
