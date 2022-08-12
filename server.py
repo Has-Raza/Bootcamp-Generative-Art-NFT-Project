@@ -135,6 +135,8 @@ def get_file(filename):
     return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'],
                                filename)
 
+# NFT MINTING PAGE
+
 @app.route('/mint-nft/')
 def mint_nft_page():
     form = UploadForm()
@@ -161,6 +163,8 @@ def nft():
     else:
         file_url = None
     return render_template("nft.html", form=form, nft_uri=nft_uri, token_json=token_json, file_url=file_url)
+
+
 
 @app.route("/images/")
 def images():
