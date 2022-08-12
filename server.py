@@ -2,6 +2,8 @@ import os
 import json
 from dotenv import load_dotenv
 import requests
+from PIL import Image
+from io import BytesIO
 from flask import Flask, render_template, request, send_from_directory, url_for
 from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_wtf import FlaskForm
@@ -9,7 +11,32 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField, StringField
 from wtforms.validators import DataRequired
 
-# from generative_art import *
+## UNCOMMENT THIS CODE WHEN RUNNING ON GOOGLE COLAB ##
+# from big_sleep import Imagine
+# import shutil
+
+# def run_dreams(txt, Learning_rate, Number_of_iterations, Number_of_epochs, Seed):
+#     dream = Imagine(
+#         text = txt,
+#         save_every = 5,
+#         save_progress = True,
+#         lr = Learning_rate,
+#         iterations = Number_of_iterations,
+#         epochs = Number_of_epochs,
+#         seed = Seed
+#     )
+#     return dream()
+
+# def get_file(txt):
+#     spl = txt.split()
+#     GA_file = '_'.join(spl)
+#     return f"{GA_file}.png"
+
+# def save_files(txt):
+#     GA_file = get_file(txt)
+#     return shutil.move(f'/content/{GA_file}', f'/content/gdrive/MyDrive/GenerativeArt/static/Images/{GA_file}')
+
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -67,7 +94,7 @@ def pin_json_to_ipfs(json):
 
 def pin_artwork(artwork_name, artwork_file):
     # Pin the file to IPFS with Pinata
-    ipfs_file_hash = pin_file_to_ipfs(artwork_file.getvalue())
+    ipfs_file_hash = pin_file_to_ipfs(artwork_file)
 
     # Build a token metadata file for the artwork
     token_json = {
@@ -92,6 +119,17 @@ def home():
 def generate_art():
     return render_template("generate-art.html")
 
+## UNCOMMENT THIS CODE WHEN RUNNING ON GOOGLE COLAB ##
+# @app.route('/run', methods = ['POST','GET'])
+# def execute_dreams():
+#   if text_records['text']:
+#       run_dreams(text_records['text'], 0.10, 10, 1, 300)
+#       save_files(text_records['text'])
+#       g_a = get_file(text_records['text'])
+#       return render_template("generate-art.html", generated_image = IMAGE_FOLDER + f"/{g_a}", response = "Successfully Generated")
+#   else:
+#       return render_template("generate-art.html", response = "No Text was given")
+
 @app.route('/images/<filename>')
 def get_file(filename):
     return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'],
@@ -108,38 +146,21 @@ def nft():
     if form.validate_on_submit():
         filename = photos.save(form.photo.data)
         file_url = url_for('get_file', filename=filename)
+
+        with open(photos.path(filename), "rb") as image:
+            f = image.read()
+            file = bytearray(f)
+        
         nft_name = form.name.data
         nft_ipfs_hash,token_json = pin_artwork(
             nft_name,
-            file_url)
+            file)
         
         nft_uri = f"ipfs.io/ipfs/{nft_ipfs_hash}"
+
     else:
         file_url = None
-    return render_template("nft.html", form=form, file_url=file_url, nft_uri=nft_uri, token_json=token_json)
-
-# @app.route("/ipfs-file/", methods=['GET', 'POST'])
-# def push_to_pinata():
-#     nft_name = data['nft_name']
-#     file = nft_url
-#     nft_ipfs_hash,token_json = pin_artwork(
-#         nft_name,
-#         file)
-    
-#     nft_uri = f"ipfs.io/ipfs/{nft_ipfs_hash}"
-#     return render_template("nft.html", nft_uri=nft_uri, token_json=token_json)
-
-# def push_to_pinata():
-#     nft_name = "DV"
-#     nft_ipfs_hash,token_json = pin_nft(
-#         nft_name,
-#         file, 
-#         date_of_creation = creation_date, 
-#         details=about_the_nft)
-
-#     nft_uri = f"ipfs.io/ipfs/{nft_ipfs_hash}"
-#     return render_template("nft.html")
-
+    return render_template("nft.html", form=form, nft_uri=nft_uri, token_json=token_json, file_url=file_url)
 
 @app.route("/images/")
 def images():

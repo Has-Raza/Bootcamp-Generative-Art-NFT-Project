@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {%block title%} 
 Generate Art
@@ -5,20 +6,15 @@ Generate Art
 {%block body%} 
 <div class="container">
     <h2>Describe your image with a sentence and let the AI do the rest!</h2>
-    <form method="post">
-    
+    <form action="/text" method="post">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Describe your art">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Advanced</button>
-            <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
+            <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Describe your art" name="text" id="text">
         </div>
-    
+        <center>
+            {% if text %}
+                <p>{{text}}</p>
+            {% endif %}
+        </center>
         <!-- <div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">Input Text</span>
             <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Describe Your Image">
@@ -26,8 +22,16 @@ Generate Art
         <!-- <br>
         <input class="form-control" type="text" placeholder="Describe Your Image" aria-label="default input example">
         <br> -->
-        <button type="button" class="btn btn-dark">Run Model</button>
+    </form>
+    <br>
+    <form action="/run" method="POST">
+        <input type="submit" value="Run Model" class="btn btn-dark" >
+        <center>
+            <img src="{{generated_image}}" class="rounded mx-auto d-block">
+            <p>{{response}}</p>
+        </center>
     </form>
 </div>
+
 
 {%endblock%}
