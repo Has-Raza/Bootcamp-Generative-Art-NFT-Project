@@ -1,10 +1,85 @@
-// const menu = document.querySelector('#mobile-menu') 
-// const menuLinks = document.querySelector('.navbar__menu')
+let provider;
+let accounts;
+//const web3 = new Web3();
+let accountAddress = "";
+let signer;
+let web3_flag = 0;
+let img_url;
+let tweet_url;
+let data;
+let ChainId;
+let nft_msg_before_loading;
+let tweetIdFromUrl;
+let smartcontract_addr;
+let transation_hash;
+let ChainId_db;
+//const Web3 = require("web3");
 
-// //Display Mobile Menu
-// const mobileMenu = () => {
-//     menu.classList.toggle('is-active')
-//     menuLinks.classList.toggle('active')
-// }
 
-// menu.addEventListener('click',mobileMenu)
+window.userWalletAddress = null
+const connectWallet = document.getElementById('connectWallet')
+const walletAddress = document.getElementById('walletAddress')
+const sendTransaction = document.getElementById('sendTransaction')
+
+
+
+function checkInstalled() {
+  if (typeof window.ethereum == 'undefined') {
+    connectWallet.innerText = 'MetaMask isnt installed, please install it'
+    connectWallet.classList.remove()
+    connectWallet.classList.add()
+    return false
+  }
+  connectWallet.addEventListener('click', connectWalletwithMetaMask)
+}
+
+async function connectWalletwithMetaMask() {
+  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+  .catch((e) => {
+  console.error(e.message)
+  return
+  })
+
+  if (!accounts) { return }
+
+  window.userWalletAddress = accounts[0]
+  walletAddress.innerText = window.userWalletAddress
+
+  connectWallet.innerText = 'Sign Out'
+  connectWallet.removeEventListener('click', connectWalletwithMetaMask)
+  setTimeout(() => {
+    connectWallet.addEventListener('click', signOutOfMetaMask)
+  }, 200)
+
+}
+
+
+function signOutOfMetaMask() {
+  window.userwalletAddress = null
+  walletAddress.innerText = ''
+  connectWallet.innerText = 'Connect Wallet'
+
+  connectWallet.removeEventListener('click', signOutOfMetaMask)
+  setTimeout(() => {
+    connectWallet.addEventListener('click', connectWalletwithMetaMask)
+  }, 200  )
+}
+
+async function mintNFT() {
+  let send = await window.ethereum.request({ method: "eth_sendTransaction",
+  params: [ {
+
+  }
+  ]
+}).catch((err)=> {
+    console.log(err)
+})
+
+console.log(parseFloat((send) / Math.pow(10,18)))
+
+sendTransaction.innerText = parseFloat((send) / Math.pow(10,18))
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  checkInstalled()
+})

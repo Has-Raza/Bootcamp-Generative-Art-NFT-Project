@@ -10,7 +10,8 @@ import requests
 load_dotenv()
 
 # Create a W3 Connection
-w3 = Web3(Web3.HTTPProvider("https://rinkeby.infura.io/v3/8cc726f0cb834d9c9ce2dcadf5c9f630"))
+rinkeby_key = os.getenv("WEB3_PROVIDER_URI")
+w3 = Web3(Web3.HTTPProvider(rinkeby_key))
 private_key = os.getenv("PRIVATE_KEY")
 contract_address = "0x47fafd7EA2Ba599D553d2c4422CCbAddAD783273"
 
