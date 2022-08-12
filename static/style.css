@@ -26,9 +26,6 @@ body {
   touch-action: manipulation;
   vertical-align: middle;
   white-space: nowrap;
-  position: absolute;
-  right: 10px;
-  top: 10px;
 }
 
 
