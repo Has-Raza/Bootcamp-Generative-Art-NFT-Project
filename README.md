@@ -8,7 +8,10 @@
 https://github.com/Has-Raza/Bootcamp-Generative-Art-NFT-Project
 
 ### Google Colab Repository
+Colab Notbook [![Open In Colab][colab-badge]][colab-notebook]
 
+[colab-notebook]: <https://colab.research.google.com/drive/1MFi3fBpyzNIqqVGW0KqtVehyaGXmhrPU#scrollTo=y1PgJ0j4DeQN?usp=sharing>
+[colab-badge]: <https://colab.research.google.com/assets/colab-badge.svg>
 
 ## Project Description 
 Da Vinci Code provides users the ability to turn text words or phases to generate an NFT.  
