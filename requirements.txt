@@ -1,0 +1,7 @@
+Flask==2.2.2
+Flask-Uploads==0.2.1
+Flask-WTF==1.0.1
+WTForms==3.0.1
+web3==5.17.0
+big-sleep==0.9.1
+python-dotenv==0.20.0

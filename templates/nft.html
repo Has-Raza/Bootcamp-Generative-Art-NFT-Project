@@ -3,12 +3,104 @@
 NFT Minter
 {%endblock%}
 {%block content%} 
+<link rel="stylesheet" href="style.css">
+{%endblock%}
+{%block body%} 
 <div class="container">
-<h2>Mint Your NFT</h2>
+  <h2>Mint Your NFT</h2>
+  <br>
+    <!-- <div class="input-group mb-3">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Describe your art" name="text" id="text">
+    </div> -->
     <div class="mb-3">
-        <label for="formFile" class="form-label">Upload the image you want to make into an NFT</label>
-        <input class="form-control" type="file" id="formFile">
+
+      <form action="/mint-nft/ipfs-file" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        {% for error in form.photo.errors %}
+          <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        
+        <div class="col">
+          <div class="col-auto" >
+            {{ form.photo(class="form-control" )}}
+          </div>
+          <br>
+          <div class="mb-3 row">
+            <label for="nft_name" class="col-sm 2 col-form-label" >Name Your Token</label>
+            {{ form.name(class="form-name")}}
+          </div>
+          <br>
+          <div class="col-auto">
+            {{ form.submit(class="btn btn-success") }}
+          </div>
+        </div>
+      </form>
+      <br>
+      {% if file_url %}
+        <div class="mt-5">
+          <img src="{{ file_url }}" style="width: 400px;">
+        </div>
+      {% endif %}
+      <br>
+
+      <center>
+        {%if tx%}
+        <p>{{tx}}</p>
+        {% endif %}
+        <br>
+        {%if signed_tx%}
+        <p>{{signed_tx}}</p>
+        {% endif %}
+        <br>
+        <br>
+        {% if nft_uri %}
+        <a href="{{nft_uri}}">NFT IPFS Gateway Link</a>
+        {% endif %}
+        <br>
+        {% if token_link %}
+        <a href="{{token_link}}">NFT IPFS Image Link</a> 
+        {% endif %}
+      </center>
+
+      <!-- <form action="/ipfs-file" method="POST">
+        <div class="mb-3 row">
+          <label for="nft_name" class="col-sm 2 col-form-label">Name Your Token</label>
+          <div class="col-sm-10">
+            <input class="form-control" type="text" placeholder="What is your token called?" aria-label="default input example", name="nft_name">
+          </div> 
+        </div>       
+        <!-- <div class="mb-3 row">
+          <label for="nft_details" class="col-sm 2 col-form-label">Additional Information</label>
+          <div class="col-sm-10">
+            <input class="form-control" type="text" placeholder="Describe your NFT" aria-label="default input example", name="nft_details">
+          </div> 
+        </div> -->
+        <!-- <br>
+        <input type="submit" value="Send Image" class="btn btn-dark" >
+        <br>
+        
+      </form> --> 
     </div>
-    <button type="button" class="btn btn-dark">Mint NFTs</button>
+    <br>
+    <!-- <center>
+        {% if text %}
+            <p>{{text}}</p>
+        {% endif %}
+    </center> -->
+    <!-- <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Input Text</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Describe Your Image">
+    </div> -->
+    <!-- <br>
+    <input class="form-control" type="text" placeholder="Describe Your Image" aria-label="default input example">
+    <br> -->
+
+  
+  <button class='connect-button' id='connectWallet' onclick="">Connect Wallet</button>
+  <!-- <button id='sendTransaction' onclick="mintNFT()">Mint Your NFT</button> -->
+  <p id="walletAddress"></p>
+  <p id="walletBalance"></p>
+
 </div>
 {%endblock%}
