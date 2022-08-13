@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 {%block title%} 
 Generate Art
@@ -26,11 +25,13 @@ Generate Art
     <br>
     <form action="/run" method="POST">
         <input type="submit" value="Run Model" class="btn btn-dark" >
-        <center>
-            <img src="{{generated_image}}" class="rounded mx-auto d-block">
-            <p>{{response}}</p>
-        </center>
     </form>
+    <br>
+      {% if generated_image %}
+        <div class="mt-5">
+          <img src="{{ generated_image }}" style="width: 400px;">
+        </div>
+      {% endif %}
 </div>
 
 

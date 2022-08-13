@@ -45,11 +45,21 @@ NFT Minter
       <br>
 
       <center>
-        {% if nft_uri %}
-        <p>{{nft_uri}}</p>
+        {%if tx%}
+        <p>{{tx}}</p>
         {% endif %}
-        {% if token_json %}
-        <p>{{token_json}}</p>
+        <br>
+        {%if signed_tx%}
+        <p>{{signed_tx}}</p>
+        {% endif %}
+        <br>
+        <br>
+        {% if nft_uri %}
+        <a href="{{nft_uri}}">NFT IPFS Gateway Link</a>
+        {% endif %}
+        <br>
+        {% if token_link %}
+        <a href="{{token_link}}">NFT IPFS Image Link</a> 
         {% endif %}
       </center>
 
