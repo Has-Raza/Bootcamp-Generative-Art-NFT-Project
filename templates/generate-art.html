@@ -2,7 +2,7 @@
 {%block title%} 
 Generate Art
 {%endblock%}
-{%block content%} 
+{%block body%} 
 <div class="container">
     <h2>Describe your image with a sentence and let the AI do the rest!</h2>
     <form action="/text" method="post">
@@ -14,21 +14,21 @@ Generate Art
                 <p>{{text}}</p>
             {% endif %}
         </center>
-        <!-- <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">Input Text</span>
-            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Describe Your Image">
-        </div> -->
-        <!-- <br>
-        <input class="form-control" type="text" placeholder="Describe Your Image" aria-label="default input example">
-        <br> -->
     </form>
     <br>
     <form action="/run" method="POST">
         <input type="submit" value="Run Model" class="btn btn-dark" >
-        <center>
-            <img src="{{generated_image}}" class="rounded mx-auto d-block" alt="generated-image">
-            <p>{{response}}</p>
-        </center>
+    </form>
+    <br>
+      {% if generated_image %}
+        <div class="mt-5">
+          <img src="{{ generated_image }}" style="width: 400px;">
+        </div>
+      {% endif %}
+</div>
+
+
+{%endblock%}nter>
     </form>
 </div>
 
